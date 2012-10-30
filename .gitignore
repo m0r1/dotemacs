@@ -1,0 +1,10 @@
+*~
+*.elc
+.DS_Store
+__MACOSX
+Thumbs.db
+.svn
+auto-save-list
+ac-comphist.dat
+auto-install/*
+wget-log
