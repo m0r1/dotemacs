@@ -5,7 +5,7 @@
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 (add-hook 'php-mode-hook
           (lambda ()
-            (setq tab-width 2
+            (setq tab-width 4
                   indent-tabs-mode nil)))
 
 (add-hook 'php-mode-hook
