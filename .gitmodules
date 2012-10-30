@@ -9,7 +9,7 @@
   url = git://github.com/mooz/js2-mode.git
 [submodule "vendor/auto-complete"]
   path = vendor/auto-complete
-  url = https://github.com/auto-complete/auto-complete.git
+  url = git://github.com/auto-complete/auto-complete.git
 [submodule "vendor/php-completion"]
   path = vendor/php-completion
   url = git://github.com/imakado/php-completion.git
