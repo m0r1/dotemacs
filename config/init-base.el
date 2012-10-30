@@ -45,7 +45,7 @@
 ;; タブをスペースで扱う
 (setq-default indent-tabs-mode nil)
 ;; タブ幅
-(custom-set-variables '(tab-width 2))
+(custom-set-variables '(tab-width 4))
 
 ;===================================
 ; Display Settings
