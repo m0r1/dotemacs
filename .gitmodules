@@ -1,0 +1,27 @@
+[submodule "vendor/auto-install"]
+  path = vendor/auto-install
+  url = git://github.com/emacsmirror/auto-install.git
+[submodule "vendor/anything-config"]
+  path = vendor/anything-config
+  url = git://repo.or.cz/anything-config.git
+[submodule "vendor/js2-mode"]
+  path = vendor/js2-mode
+  url = git://github.com/mooz/js2-mode.git
+[submodule "vendor/auto-complete"]
+  path = vendor/auto-complete
+  url = https://github.com/auto-complete/auto-complete.git
+[submodule "vendor/php-completion"]
+  path = vendor/php-completion
+  url = git://github.com/imakado/php-completion.git
+[submodule "vendor/php-mode"]
+  path = vendor/php-mode
+  url = git://github.com/ejmr/php-mode.git
+[submodule "vendor/yaml-mode"]
+  path = vendor/yaml-mode
+  url = git://github.com/yoshiki/yaml-mode.git
+[submodule "vendor/yasnippet"]
+  path = vendor/yasnippet
+  url = git://github.com/capitaomorte/yasnippet.git
+[submodule "vendor/zencoding"]
+  path = vendor/zencoding
+  url = git://github.com/rooney/zencoding.git
