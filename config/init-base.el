@@ -5,6 +5,7 @@
 (set-default-coding-systems 'utf-8)
 (set-selection-coding-system 'utf-8)
 (set-buffer-file-coding-system 'utf-8)
+(setq dired-default-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
 ;; 文字コードの自動判定をオフ
@@ -39,6 +40,21 @@
 ;; スクラッチメッセージ非表示
 (setq initial-scratch-message "")
 
+;; 同一ファイル名を区別できるように
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+
+
+;===================================
+;; dired
+;===================================
+;; 2つのウィンドウで開いている時に、デフォルトの移動orコピー先をもう一方のディレクトリにする
+(setq dired-dwim-target t)
+;; ディレクトリを再帰的にコピーする
+(setq dired-recursive-copies 'always)
+;; C-sした時にファイル名だけにマッチするように
+(setq dired-isearch-filenames t)
+
 ;===================================
 ;; Indent
 ;===================================
@@ -60,48 +76,35 @@
 (set-face-foreground 'show-paren-match-face "SkyBlue")
 
 (setq default-frame-alist initial-frame-alist)
-(progn
-  (global-font-lock-mode 1)
-  (set-face-foreground 'font-lock-comment-face "MediumSeaGreen")
-  (set-face-foreground 'font-lock-string-face  "Purple")
-  (set-face-foreground 'font-lock-keyword-face "Pink")
-  (set-face-foreground 'font-lock-function-name-face "SkyBlue")
-  (set-face-bold-p 'font-lock-function-name-face t)
-  (set-face-foreground 'font-lock-variable-name-face "Blue")
-  (set-face-foreground 'font-lock-type-face "LightSeaGreen")
-  (set-face-foreground 'font-lock-builtin-face "Navy")
-  (set-face-foreground 'font-lock-constant-face "Green")
-  (set-face-foreground 'font-lock-warning-face "Skyblue")
-  (set-face-bold-p 'font-lock-warning-face t)
-  (set-background-color "Black")
-  (set-cursor-color "Purple")
-  (set-face-foreground 'modeline "Purple")
-  (set-face-background 'modeline "AntiqueWhite")
-)
 
 
 ;===================================
-;; Show tab, zenkaku-space, white spaces at end of line
-;; http://www.bookshelf.jp/soft/meadow_26.html#SEC317
+; Show tab, zenkaku-space, whitespaces at end of line, etc.
 ;===================================
-(defface my-face-tab         '((t (:background "Purple"))) nil :group 'my-faces)
-(defface my-face-zenkaku-spc '((t (:background "LimeGreen"))) nil :group 'my-faces)
-(defface my-face-spc-at-eol  '((t (:foreground "Red" :underline t))) nil :group 'my-faces)
-(defvar my-face-tab         'my-face-tab)
-(defvar my-face-zenkaku-spc 'my-face-zenkaku-spc)
-(defvar my-face-spc-at-eol  'my-face-spc-at-eol)
-(defadvice font-lock-mode (before my-font-lock-mode ())
-  (font-lock-add-keywords
-   major-mode
-   '(("\t" 0 my-face-tab append)
-     ("　" 0 my-face-zenkaku-spc append)
-     ("[ \t]+$" 0 my-face-spc-at-eol append)
-     )))
-(ad-enable-advice 'font-lock-mode 'before 'my-font-lock-mode)
-(ad-activate 'font-lock-mode)
-;; settings for text file
-(add-hook 'text-mode-hook
-          '(lambda () (progn (font-lock-mode t) (font-lock-fontify-buffer))))
+(require 'whitespace)
+(setq whitespace-style '(face spaces space-mark tabs tab-mark empty trailing))
+(setq whitespace-display-mappings
+      '((space-mark ?\u3000 [?\u25a1])
+        ;; WARNING: the mapping below has a problem.
+        ;; When a TAB occupies exactly one column, it will display the
+        ;; character ?\xBB at that column followed by a TAB which goes to
+        ;; the next TAB column.
+        ;; If this is a problem for you, please, comment the line below.
+        (tab-mark ?\t [?\xBB ?\t] [?\\ ?\t])))
+(setq whitespace-space-regexp "\\(\u3000+\\)")
+(setq whitespace-action '(auto-cleanup))
+(global-whitespace-mode 1)
+(set-face-attribute 'whitespace-trailing nil
+                    :background "DeepPink"
+                    :underline t)
+(set-face-attribute 'whitespace-tab nil
+                    :background "Purple")
+(set-face-attribute 'whitespace-space nil
+                    :background "LimeGreen"
+                    :weight 'bold)
+(set-face-attribute 'whitespace-empty nil
+                    :background "Red"
+                    :underline t)
 
 ;; 余分な空白を削除する
 (defun trim-buffer ()
@@ -122,7 +125,5 @@
     (goto-char (point-max))
     (delete-blank-lines)
     ))
-;; trim-buffer を実行(保存時)
-;;(add-hook 'write-file-hooks '(lambda () (trim-buffer)))
 ;; trim-buffer を実行(M-o)
 (global-set-key "\eo" 'trim-buffer)
